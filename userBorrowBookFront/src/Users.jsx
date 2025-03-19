@@ -18,8 +18,20 @@ const Users = () => {
 
   // Delete a user by ID
 
+  const deleteUser = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/users/${id}`);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   //Update user
-    //Redirect to update form
+  //Redirect to update form
+  const updateUser = async (user) => {
+    navigate(`/users/update/${user.id}`, { state: { user } });
+  };
 
   //Create user
   const createUser = () => {
@@ -54,6 +66,12 @@ const Users = () => {
                 <Typography variant="body2" color="text.secondary">
                   Age: {user.age}
                 </Typography>
+                <Button color="primary" onClick={() => updateUser(user)}>
+                  Update
+                </Button>    
+                  <Button color="secondary" onClick={() => deleteUser(user.id)}>
+                    Delete
+                  </Button>
               </CardContent>
             </Card>
           </Grid>

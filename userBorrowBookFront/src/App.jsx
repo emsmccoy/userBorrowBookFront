@@ -6,6 +6,7 @@ import Books from "./Books";
 import Users from "./Users";
 import Borrows from "./Borrows";
 import UpdateBookForm from "./UpdateBookForm";
+import UpdateUserForm from "./UpdateUserForm";
 import CreateBookForm from "./CreateBookForm";
 import CreateUserForm from "./CreateUserForm";
 
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/users" element={<Users />} />
             <Route path="/borrows" element={<Borrows />} />
             <Route path="/books/update/:id" element={<UpdateBookForm />} />
+            <Route path="/users/update/:id" element={<UpdateUserForm />} />
             <Route path="/books/create" element={<CreateBookForm />} />
             <Route path="/users/create" element={<CreateUserForm />} />
           </Routes>
