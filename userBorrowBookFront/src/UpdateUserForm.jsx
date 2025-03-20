@@ -22,7 +22,7 @@ const UpdateUserForm = () => {
     age: user.age || "",
     address: user.address || "",
     archived: user.archived || false,
-    dob: user.dob || "", // Note: This should be a date string
+    dob: user.dob || "", 
   });
 //handlechange
   const handleChange = (e) => {

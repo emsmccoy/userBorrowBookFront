@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "./api";
-import { Card, CardContent, Typography, Grid, Paper, Button } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Paper, Button, Box } from "@mui/material";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/users");
+      const response = await axios.get("/users"); // we can also use fetch ()
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -22,6 +22,7 @@ const Users = () => {
     try {
       await axios.delete(`http://localhost:8080/api/v1/users/${id}`);
       setUsers(users.filter((user) => user.id !== id));
+      // other way would be to use fetchUsers function again
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -38,23 +39,31 @@ const Users = () => {
     navigate("/users/create");
   }
 
+  //
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   return (
-    <Paper style={{ padding: "16px" }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={createUser}
-        style={{ marginBottom: "20px" }}
-      >
-        Create User
-      </Button>
-      <Grid container spacing={2}>
+    <Paper sx={{ padding: 2 }}>
+      <Box sx={{ marginBottom: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={createUser}
+          sx={{ marginBottom: 2 }}
+        >
+          Create User
+        </Button>
+      </Box>
+
+      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
         {users.map((user) => (
-          <Grid item xs={12} sm={6} md={4} key={user.id}>
+          <Box
+            key={user.id}
+            gridColumn={{ xs: "span 12", sm: "span 6", md: "span 3" }}
+          >
             <Card>
               <CardContent>
                 <Typography variant="h6" component="div">
@@ -66,17 +75,34 @@ const Users = () => {
                 <Typography variant="body2" color="text.secondary">
                   Age: {user.age}
                 </Typography>
-                <Button color="primary" onClick={() => updateUser(user)}>
-                  Update
-                </Button>    
-                  <Button color="secondary" onClick={() => deleteUser(user.id)}>
+                <Box sx={{ marginTop: 1 }}>
+                  <Button
+                    variant = "text"
+                    onClick={() => showUserDetails(user)}
+                    sx = {{ marginRight: 1 }}>
+                    Show details
+                  </Button>
+                </Box>
+                <Box sx={{ marginTop: 1 }}>
+                  <Button
+                    color="primary"
+                    onClick={() => updateUser(user)}
+                    sx={{ marginRight: 1 }}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    color="secondary"
+                    onClick={() => deleteUser(user.id)}
+                  >
                     Delete
                   </Button>
+                </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Paper>
   );
 };
