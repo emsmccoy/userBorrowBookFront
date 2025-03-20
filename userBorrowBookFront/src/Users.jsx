@@ -1,45 +1,46 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from "./api";
 import { Card, CardContent, Typography, Grid, Paper, Button, Box } from "@mui/material";
+import UserDetailsDialog from './UserDetailsDialog'; // Import the dialog component
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
+
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/users"); // we can also use fetch ()
+      const response = await axios.get("/users");
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
 
-  // Delete a user by ID
-
   const deleteUser = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/v1/users/${id}`);
       setUsers(users.filter((user) => user.id !== id));
-      // other way would be to use fetchUsers function again
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  //Update user
-  //Redirect to update form
   const updateUser = async (user) => {
     navigate(`/users/update/${user.id}`, { state: { user } });
   };
 
-  //Create user
-  const createUser = () => {
-    navigate("/users/create");
-  }
+  const showUserDetails = (user) => {
+    setSelectedUser(user);
+    setShowDetails(true);
+  };
 
-  //
+  const handleCloseDetails = () => {
+    setShowDetails(false);
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -51,7 +52,7 @@ const Users = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={createUser}
+          onClick={() => navigate("/users/create")}
           sx={{ marginBottom: 2 }}
         >
           Create User
@@ -62,7 +63,13 @@ const Users = () => {
         {users.map((user) => (
           <Box
             key={user.id}
-            gridColumn={{ xs: "span 12", sm: "span 6", md: "span 3" }}
+            sx={{
+              gridColumn: {
+                xs: "span 12",
+                sm: "span 6",
+                md: "span 4",
+              },
+            }}
           >
             <Card>
               <CardContent>
@@ -77,13 +84,12 @@ const Users = () => {
                 </Typography>
                 <Box sx={{ marginTop: 1 }}>
                   <Button
-                    variant = "text"
+                    color="primary"
                     onClick={() => showUserDetails(user)}
-                    sx = {{ marginRight: 1 }}>
-                    Show details
+                    sx={{ marginRight: 1 }}
+                  >
+                    Show Details
                   </Button>
-                </Box>
-                <Box sx={{ marginTop: 1 }}>
                   <Button
                     color="primary"
                     onClick={() => updateUser(user)}
@@ -103,6 +109,7 @@ const Users = () => {
           </Box>
         ))}
       </Box>
+      <UserDetailsDialog open={showDetails} onClose={handleCloseDetails} user={selectedUser} />
     </Paper>
   );
 };
