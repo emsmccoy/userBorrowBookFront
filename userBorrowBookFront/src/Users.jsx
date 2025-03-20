@@ -39,7 +39,10 @@ const Users = () => {
     navigate("/users/create");
   }
 
-  //
+  //Show details 
+  const showUserDetails = (user) => {
+    navigate(`/users/${user.id}`, { state: { user } });
+  };
 
   useEffect(() => {
     fetchUsers();

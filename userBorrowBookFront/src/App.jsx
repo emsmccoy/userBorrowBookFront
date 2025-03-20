@@ -9,6 +9,7 @@ import UpdateBookForm from "./UpdateBookForm";
 import UpdateUserForm from "./UpdateUserForm";
 import CreateBookForm from "./CreateBookForm";
 import CreateUserForm from "./CreateUserForm";
+import UserDetails from "./UserDetails"
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/users/update/:id" element={<UpdateUserForm />} />
             <Route path="/books/create" element={<CreateBookForm />} />
             <Route path="/users/create" element={<CreateUserForm />} />
+            <Route path="/users/:id" element={<UserDetails />} />
           </Routes>
         </div>
       </div>
