@@ -1,28 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import axios from "./api";
 import { Card, CardContent, Typography, Paper, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Borrows = () => {
   const [borrows, setBorrows] = useState([]); // we could create useloading and useerror
-  // usestate for books
   // usestate for users
+  const [users, setUsers] = useState([]);
+  // usestate for books
+  const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
 
   // useeffect calling fetch books, users and borrows
+  
+  const fetchBorrows = async () => {
+    try {
+      const response = await axios.get("/borrows");
+      setBorrows(response.data);
+    } catch (error) {
+      console.error("Error fetching borrows:", error);
+    }
+  };
+  
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("/books");
+      setBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchBorrows = async () => {
-      try {
-        const response = await axios.get("/borrows");
-        setBorrows(response.data);
-      } catch (error) {
-        console.error("Error fetching borrows:", error);
-      }
-    };
+    fetchUsers();
+    fetchBooks();
     fetchBorrows();
   }, []);
 
   //createborrow that navigates to component create borrow and passes the books and users in the state as props
+
+  const createBorrow = () => {
+    navigate("/borrows/create", {
+      state: {
+        books,
+        users,
+      },
+    });
+  };
 
   return (
     <Paper sx={{ padding: 2 }}>
@@ -30,7 +63,7 @@ const Borrows = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => createBorrow()}
+          onClick={createBorrow}
           sx={{ marginBottom: 2 }}
         >
           Create New Borrow

@@ -8,6 +8,7 @@ import Borrows from "./Borrows";
 import UpdateBookForm from "./UpdateBookForm";
 import UpdateUserForm from "./UpdateUserForm";
 import CreateBookForm from "./CreateBookForm";
+import CreateBorrowForm from "./CreateBorrowForm";
 import CreateUserForm from "./CreateUserForm";
 import UserDetails from "./UserDetails"
 
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/books/create" element={<CreateBookForm />} />
             <Route path="/users/create" element={<CreateUserForm />} />
             <Route path="/users/:id" element={<UserDetails />} />
+            <Route path="/borrows/create" element={<CreateBorrowForm />} />
           </Routes>
         </div>
       </div>
