@@ -3,7 +3,12 @@ import axios from "./api";
 import { Card, CardContent, Typography, Paper, Button, Box } from "@mui/material";
 
 const Borrows = () => {
-  const [borrows, setBorrows] = useState([]);
+  const [borrows, setBorrows] = useState([]); // we could create useloading and useerror
+  // usestate for books
+  // usestate for users
+
+  // useeffect calling fetch books, users and borrows
+
 
   useEffect(() => {
     const fetchBorrows = async () => {
@@ -16,6 +21,8 @@ const Borrows = () => {
     };
     fetchBorrows();
   }, []);
+
+  //createborrow that navigates to component create borrow and passes the books and users in the state as props
 
   return (
     <Paper sx={{ padding: 2 }}>
